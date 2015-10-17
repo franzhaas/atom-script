@@ -376,6 +376,18 @@ module.exports =
       command: "RantConsole.exe"
       args: (context) -> ['-file', context.filepath]
 
+  "Robot Framework":
+    "File Based":
+      command: 'pybot'
+      args: (context) ->
+          if atom.project.contains(context.filepath)
+            [project_path, relative_path] = atom.project.relativizePath(context.filepath)
+            index_of_final_dot = relative_path.lastIndexOf '.'
+            suite = relative_path[0...index_of_final_dot].replace /\//g, '.'
+            ['--suite', suite, project_path]
+          else
+            [context.filepath]
+
   RSpec:
     "Selection Based":
       command: "ruby"
